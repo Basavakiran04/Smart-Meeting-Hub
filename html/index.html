@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Meeting Hub</title>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center h-screen">
+
+    <div class="bg-white p-8 rounded-xl shadow-md text-center max-w-md w-full">
+        <h1 class="text-2xl font-bold mb-2 text-gray-900">Smart Meeting Hub</h1>
+        <p class="text-gray-600 mb-6">Manage your offline office meetings easily.</p>
+        
+        <!-- The button the user clicks -->
+        <button id="login-btn" class="bg-blue-600 text-white px-6 py-3 rounded-lg font-semibold w-full hover:bg-blue-700 transition">
+            Login / Sign Up
+        </button>
+    </div>
+
+    <!-- 1. Load Clerk from CDN with your Publishable Key directly in the attribute -->
+    <script async crossorigin="anonymous" 
+            src="https://cdn.jsdelivr.net/npm/@clerk/clerk-js@latest/dist/clerk.browser.js" 
+            data-clerk-publishable-key="pk_test_YXJyaXZpbmctY2FtZWwtMTI3Mi5jbGVyay5hY2NvdW50cy5kZXYk">
+    </script>
+    
+    <!-- 2. Write our simple logic -->
+    <script>
+        window.addEventListener('load', async function () {
+            try {
+                // Ensure window.Clerk is available
+                if (!window.Clerk) {
+                    console.error("Window.Clerk script failed to load from CDN.");
+                    return;
+                }
+
+                // Initialize Clerk
+                await window.Clerk.load();
+                console.log("✅ Clerk loaded successfully!");
+
+                const loginBtn = document.getElementById('login-btn');
+
+                // Check if someone is already logged in
+                if (window.Clerk.user) {
+                    loginBtn.textContent = "Go to Dashboard";
+                    loginBtn.onclick = () => {
+                        window.location.href = 'dashboard.html';
+                    };
+                } else {
+                    // If not logged in, redirect to Clerk's secure hosted login page
+                    loginBtn.onclick = async () => {
+                        try {
+                            await window.Clerk.redirectToSignIn({
+                                redirectUrl: window.location.origin + '/dashboard.html'
+                            });
+                        } catch (err) {
+                            console.error("Error redirecting to sign-in:", err);
+                        }
+                    };
+                }
+            } catch (error) {
+                console.error("❌ Error setting up Clerk:", error);
+            }
+        });
+    </script>
+</body>
+</html>

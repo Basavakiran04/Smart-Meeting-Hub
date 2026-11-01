@@ -1,0 +1,6 @@
+#clerk public key
+config.js
+
+export const CLERK_PUBLISHABLE_KEY = "pk_test_YXJyaXZpbmctY2FtZWwtMTI3Mi5jbGVyay5hY2NvdW50cy5kZXYk";
+export const SUPABASE_URL = "";
+export const SUPABASE_ANON_KEY = "";
